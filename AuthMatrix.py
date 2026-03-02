@@ -2647,10 +2647,9 @@ class SuccessBooleanRenderer(JCheckBox,TableCellRenderer):
 
     def getTableCellRendererComponent(self, table, value, isSelected, hasFocus, row, column):
         cell = self._defaultCellRender.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
-        if value:
-            cell.setSelected(True)
-        else:
-            cell.setSelected(False)
+        # FlatLaf compatibility: some boolean renderers don't implement setSelected()
+        if hasattr(cell, "setSelected"):
+            cell.setSelected(True if value else False)
         if isSelected:
             cell.setForeground(table.getSelectionForeground())
             cell.setBackground(table.getSelectionBackground())
